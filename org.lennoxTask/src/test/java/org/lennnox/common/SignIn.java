@@ -21,8 +21,8 @@ public class SignIn extends BaseData {
 		System.out.println(LoginPageObject.signInButton);
 
 		click(LoginPageObject.signInButton,10); 
-		fillTextBox(LoginPageObject.signInName,"lenproautomation8@lenqat.com",10); 
-		fillTextBox(LoginPageObject.password,"Community17",10); 
+		fillTextBox(LoginPageObject.signInName,EMailID,10); 
+		fillTextBox(LoginPageObject.password,Password,10); 
 		click(LoginPageObject.LoginBtn,10);
 
 

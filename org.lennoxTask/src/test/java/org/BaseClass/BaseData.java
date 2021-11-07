@@ -2,55 +2,55 @@ package org.BaseClass;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
 import org.testng.asserts.SoftAssert;
 
-public class BaseData {
+public class BaseData extends ExcelDataReader {
 
 
 	public static WebDriver driver;
 	private SoftAssert softAssert = new SoftAssert();
-	public static final String projectPath = System.getProperty("user.dir");
+	public static final String userDir = System.getProperty("user.dir");
 	private WebDriverWait wd;
 	private Actions ac;
 	private Select dropDown;
-	public static final String testFilePath = "\\src\\test\\resources\\TestData\\TestDataXL.xlsx";
-	public static final String credentialsFilePath = "\\src\\test\\resources\\TestData\\Credentials.xlsx";
-	public static final String UITexts = "\\src\\test\\resources\\TestData\\UITexts.xlsx";
+	public static final String testDataFilePath = userDir+"\\src\\test\\resources\\TestData\\TestData.xlsx";
 	boolean status = false;
+
 	public void openBrowser(String browserName) {
 
 		if(browserName.equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", projectPath+"\\src\\test\\resources\\Drivers\\chromedriver.exe");
+			
+			System.setProperty("webdriver.chrome.driver", userDir+"\\src\\test\\resources\\Drivers\\chromedriver.exe");
 			driver = new ChromeDriver();
 			driver.manage().window().maximize();
 		}
 		else if (browserName.equalsIgnoreCase("firefox")) {
-			System.setProperty("webdriver.gecko.driver", projectPath+"\\src\\test\\resources\\Drivers\\geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver", userDir+"\\src\\test\\resources\\Drivers\\geckodriver.exe");
 			driver = new FirefoxDriver();
 			driver.manage().window().maximize();
 		}
 		else {
-			System.setProperty("webdriver.ie.driver", projectPath+"\\src\\test\\resources\\Drivers\\chromedriver.exe");
+			System.setProperty("webdriver.ie.driver", userDir+"\\src\\test\\resources\\Drivers\\chromedriver.exe");
 			driver = new InternetExplorerDriver();
 			driver.manage().window().maximize();
 		}
@@ -58,8 +58,9 @@ public class BaseData {
 	}
 
 	public void navigateToPage(String url) {
-
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.navigate().to(url);
+		acceptCookiesPolicy();
 
 	}
 
@@ -67,6 +68,11 @@ public class BaseData {
 		e.sendKeys(text);
 	}
 
+	private void acceptCookiesPolicy() {
+	    driver.findElement(By.id("onetrust-accept-btn-handler")).click();
+	    driver.switchTo().defaultContent();
+	}
+	
 	public void fillTextBox(WebElement e, String text, int timeInSecs) {
 		waitElementPresents(e, timeInSecs);
 		e.sendKeys(text);
@@ -178,13 +184,15 @@ public class BaseData {
 		dropDown.selectByValue(value);
 
 	}
-	public Boolean isElementFound(String elementToVerify) {
+	public Boolean isElementFound(WebElement elementToVerify) {
 
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-		if(driver.findElement(By.xpath(elementToVerify)).isDisplayed()) {
-			System.out.println("Status --------- "+status);
+		if(driver.findElements((By) elementToVerify).size() != 0) {
+			
+			System.out.println("Number of elements present --------- "+driver.findElements((By) elementToVerify).size());
+			status = true;
 			return status;
 		}
 		else {
@@ -192,10 +200,5 @@ public class BaseData {
 			return status;
 		}
 	}
-	
-	public void readExcelData() {
-		
-		
-		
-	}
+
 }
