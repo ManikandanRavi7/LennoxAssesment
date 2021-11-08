@@ -50,7 +50,7 @@ public class ExcelDataReader {
 		}
 
 	}
-	// returns the data from a cell
+	
 	public String getCellData(String sheetName, String colName, int rowNum) {
 		try {
 			if (rowNum <= 0)

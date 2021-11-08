@@ -70,11 +70,11 @@ public class Purchase_CommonFunctions extends BaseData {
 		MDesc = MDesc.replace("Model/Part # : ", "");
 		System.out.println(MDesc);
 
-		Map<String, String> maniMap = new HashedMap<String, String>();
-		maniMap.put("ProductName", PDesc);
-		maniMap.put("Modelname", MDesc);
+		Map<String, String> data = new HashedMap<String, String>();
+		data.put("ProductName", PDesc);
+		data.put("Modelname", MDesc);
 
-		System.out.println(maniMap);
+		System.out.println(data);
 
 	}
 

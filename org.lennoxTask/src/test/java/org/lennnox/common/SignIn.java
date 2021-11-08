@@ -24,6 +24,7 @@ public class SignIn extends BaseData {
 		fillTextBox(LoginPageObject.signInName,EMailID,10); 
 		fillTextBox(LoginPageObject.password,Password,10); 
 		click(LoginPageObject.LoginBtn,10);
+		assertEquals(LoginPageObject.signInButton, PageTitle);
 
 
 	}
