@@ -13,20 +13,25 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.model.Report;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 public class PurchaseCompressors_Flow extends BaseData {
 
 	Purchase_CommonFunctions purchaseCommon = new Purchase_CommonFunctions();
 	SignIn signInCommon = new SignIn();
 	private Object LogStatus;
+	public static ExtentReports extent;
+	public static ExtentSparkReporter spark;
 
 	@BeforeTest
 	public void startExecution() throws IOException {
-
+		extent = new ExtentReports();
+		spark = new ExtentSparkReporter("Spark.html");
+		extent.attachReporter(spark);
 		readTestData();
 		openBrowser("chrome");
 		navigateToPage(URL);
-		// signInCommon.signIn_From_HomeScreen();
+		signInCommon.signIn_From_HomeScreen();
 
 	}
 
